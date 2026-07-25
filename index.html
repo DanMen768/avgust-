@@ -241,6 +241,12 @@
             background: linear-gradient(135deg, #ecc0c0, #e8b8b8) !important;
         }
 
+        .btn-maybe {
+            background: rgba(235, 240, 245, 0.4) !important;
+            border: 1px solid rgba(180, 200, 210, 0.2) !important;
+            color: #5a6a72 !important;
+        }
+
         .date-time-wrap {
             background: rgba(255, 248, 245, 0.5);
             backdrop-filter: blur(4px);
@@ -485,7 +491,7 @@
             .btn-group, .date-time-wrap, .text-area-wrap { max-width: 100%; }
             .time-selector { flex-direction: column; gap: 8px; }
             .time-selector input[type="time"] { width: 100%; }
-            .btn-group { min-height: 130px; }
+            .btn-group { min-height: 150px; }
             .custom-place-wrap { max-width: 100%; }
         }
 
@@ -551,12 +557,13 @@
             </div>
         </div>
 
-        <!-- screen 1: question 1 -->
+        <!-- screen 1: question 1 — с нейтральным ответом -->
         <div class="screen" id="screen1">
-            <h2 class="question-title">Пойдешь погулять в августе? </h2>
+            <h2 class="question-title">Пойдешь со мной гулять в августе? 💕</h2>
             <div class="btn-group" id="btnGroup1">
-                <button class="btn btn-choice btn-yes" id="btnYes" data-answer="Да 😊"> Да 😊</button>
+                <button class="btn btn-choice btn-yes" id="btnYes" data-answer="Да 😊">💖 Да 😊</button>
                 <button class="btn btn-choice btn-no" id="btnNo">😅 Нет</button>
+                <button class="btn btn-choice btn-maybe" id="btnMaybe" data-answer="Может быть 😌">🌿 Может быть 😌</button>
             </div>
         </div>
 
@@ -630,6 +637,7 @@
             // ===== УБЕГАЮЩАЯ КНОПКА "НЕТ" =====
             const btnNo = document.getElementById('btnNo');
             const btnYes = document.getElementById('btnYes');
+            const btnMaybe = document.getElementById('btnMaybe');
 
             function moveNoButton() {
                 const container = btnNo.parentElement;
@@ -661,6 +669,11 @@
             });
 
             btnYes.addEventListener('click', function() {
+                answers.q1 = this.dataset.answer;
+                goToNext();
+            });
+
+            btnMaybe.addEventListener('click', function() {
                 answers.q1 = this.dataset.answer;
                 goToNext();
             });
@@ -762,13 +775,11 @@
             const customPlaceWrap = document.getElementById('customPlaceWrap');
             const customPlaceInput = document.getElementById('customPlaceInput');
             const placeContinue = document.getElementById('placeContinue');
-            let customPlaceSelected = false;
 
             document.querySelectorAll('#screen3 .btn-choice:not(#customPlaceBtn)').forEach(btn => {
                 btn.addEventListener('click', function() {
                     customPlaceWrap.classList.remove('open');
                     placeContinue.style.display = 'none';
-                    customPlaceSelected = false;
                     answers.place = this.dataset.place;
                     goToNext();
                 });
@@ -778,7 +789,6 @@
                 customPlaceWrap.classList.add('open');
                 placeContinue.style.display = 'flex';
                 customPlaceInput.focus();
-                customPlaceSelected = true;
                 answers.place = null;
             });
 
@@ -906,7 +916,6 @@
                 customPlaceInput.value = '';
                 customPlaceWrap.classList.remove('open');
                 placeContinue.style.display = 'none';
-                customPlaceSelected = false;
                 btnNo.style.position = 'relative';
                 btnNo.style.left = '0px';
                 btnNo.style.top = '0px';
