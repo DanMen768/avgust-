@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Прогулка в августе ☀️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, #fdf6f0 0%, #fce9e6 40%, #f5e6e8 100%);
+            padding: 16px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .bg-blur {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .bg-blur--1 { width: 350px; height: 350px; top: -80px; left: -100px; background: rgba(255, 182, 193, 0.25); }
+        .bg-blur--2 { width: 400px; height: 400px; bottom: -120px; right: -120px; background: rgba(200, 230, 220, 0.25); }
+        .bg-blur--3 { width: 250px; height: 250px; top: 30%; left: 70%; background: rgba(255, 218, 185, 0.2); }
+        .bg-blur--4 { width: 200px; height: 200px; bottom: 20%; left: 10%; background: rgba(255, 200, 210, 0.15); }
+
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0.15;
+            animation: floatParticle 20s infinite alternate ease-in-out;
+        }
+        .particle:nth-child(1) { left: 8%; top: 15%; font-size: 28px; animation-duration: 22s; }
+        .particle:nth-child(2) { left: 88%; top: 20%; font-size: 22px; animation-duration: 26s; }
+        .particle:nth-child(3) { left: 20%; top: 78%; font-size: 30px; animation-duration: 20s; }
+        .particle:nth-child(4) { left: 75%; top: 75%; font-size: 18px; animation-duration: 24s; }
+        .particle:nth-child(5) { left: 50%; top: 35%; font-size: 24px; animation-duration: 28s; }
+        .particle:nth-child(6) { left: 5%; top: 55%; font-size: 26px; animation-duration: 30s; }
+        .particle:nth-child(7) { left: 90%; top: 50%; font-size: 20px; animation-duration: 19s; }
+        .particle:nth-child(8) { left: 40%; top: 5%; font-size: 22px; animation-duration: 25s; }
+
+        @keyframes floatParticle {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            33% { transform: translate(20px, -30px) rotate(10deg) scale(1.1); }
+            66% { transform: translate(-10px, -15px) rotate(-5deg) scale(0.95); }
+            100% { transform: translate(15px, -40px) rotate(8deg) scale(1.05); }
+        }
+
+        .app-card {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 420px;
+            min-height: 520px;
+            background: rgba(255, 248, 245, 0.6);
+            backdrop-filter: blur(32px) saturate(180%);
+            -webkit-backdrop-filter: blur(32px) saturate(180%);
+            border-radius: 48px;
+            padding: 32px 24px 36px;
+            box-shadow: 0 30px 60px rgba(200, 150, 160, 0.12), 0 10px 25px rgba(200, 150, 160, 0.06), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .progress-wrap {
+            position: absolute;
+            bottom: 20px;
+            left: 24px;
+            right: 24px;
+            width: calc(100% - 48px);
+            height: 3px;
+            background: rgba(220, 190, 195, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #f5a0b0, #e8b4b8, #d4b5b8);
+            border-radius: 12px;
+            transition: width 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .screen {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            flex: 1;
+            animation: fadeSlide 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            padding: 8px 0;
+        }
+        .screen.active { display: flex; }
+
+        @keyframes fadeSlide {
+            0% { opacity: 0; transform: translateY(16px) scale(0.98); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .title-main {
+            font-size: 30px;
+            line-height: 1.2;
+            color: #4a2c34;
+            margin-bottom: 6px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            text-align: center;
+        }
+        .subtitle {
+            font-size: 16px;
+            color: #8a6a72;
+            margin-bottom: 24px;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            text-align: center;
+        }
+        .question-title {
+            font-size: 22px;
+            font-weight: 560;
+            color: #4a2c34;
+            margin-bottom: 20px;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            text-align: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 28px;
+            background: rgba(255, 240, 235, 0.5);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 60px;
+            font-size: 17px;
+            font-weight: 480;
+            color: #4a2c34;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            box-shadow: 0 2px 12px rgba(200, 150, 160, 0.05);
+            letter-spacing: -0.01em;
+            text-decoration: none;
+            margin: 4px 0;
+            width: 100%;
+            max-width: 320px;
+            text-align: center;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+        .btn:active {
+            transform: scale(0.97);
+            background: rgba(240, 210, 210, 0.4);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #f5d0d0, #f0c8c8);
+            border: 1px solid rgba(255, 200, 200, 0.3);
+            color: #4a2c34;
+            font-weight: 520;
+            box-shadow: 0 6px 20px rgba(230, 160, 170, 0.15);
+        }
+        .btn-primary:active {
+            background: linear-gradient(135deg, #ecc0c0, #e8b8b8);
+            transform: scale(0.97);
+        }
+        .btn-choice {
+            background: rgba(255, 248, 245, 0.5);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(240, 210, 215, 0.25);
+            justify-content: center;
+            padding: 16px 14px;
+            border-radius: 60px;
+            font-size: 17px;
+            font-weight: 450;
+            color: #4a2c34;
+            transition: all 0.2s ease;
+            margin: 5px 0;
+            box-shadow: 0 2px 8px rgba(200, 150, 160, 0.03);
+            max-width: 320px;
+            width: 100%;
+        }
+        .btn-choice:active {
+            background: rgba(240, 210, 215, 0.3);
+            transform: scale(0.98);
+            border-color: rgba(230, 170, 180, 0.3);
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+            width: 100%;
+            max-width: 320px;
+            position: relative;
+            min-height: 150px;
+        }
+
+        .btn-no {
+            position: relative;
+            background: rgba(240, 235, 235, 0.4) !important;
+            border: 1px solid rgba(200, 180, 185, 0.2) !important;
+            color: #8a7a7a !important;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #f5d0d0, #f0c8c8) !important;
+            border: 1px solid rgba(255, 200, 200, 0.3) !important;
+            font-weight: 520 !important;
+        }
+        .btn-yes:active {
+            background: linear-gradient(135deg, #ecc0c0, #e8b8b8) !important;
+        }
+
+        .date-time-wrap {
+            background: rgba(255, 248, 245, 0.5);
+            backdrop-filter: blur(4px);
+            border-radius: 32px;
+            padding: 20px 20px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            margin: 4px 0 10px;
+            box-shadow: 0 4px 20px rgba(200, 150, 160, 0.06);
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .custom-calendar {
+            width: 100%;
+            text-align: center;
+        }
+        .custom-calendar .month-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0 12px;
+            font-weight: 500;
+            color: #4a2c34;
+            font-size: 16px;
+        }
+        .custom-calendar .month-header button {
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: #b09098;
+            transition: 0.2s;
+            padding: 4px 12px;
+            border-radius: 30px;
+        }
+        .custom-calendar .month-header button:active {
+            transform: scale(0.9);
+            background: rgba(200, 150, 160, 0.1);
+        }
+        .custom-calendar .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            font-size: 12px;
+            color: #b098a0;
+            font-weight: 450;
+            margin-bottom: 6px;
+        }
+        .custom-calendar .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+        .custom-calendar .day {
+            padding: 8px 0;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 450;
+            color: #4a2c34;
+            cursor: pointer;
+            transition: 0.2s;
+            background: transparent;
+            border: none;
+        }
+        .custom-calendar .day:active {
+            transform: scale(0.92);
+        }
+        .custom-calendar .day.selected {
+            background: linear-gradient(135deg, #f5d0d0, #ecc0c0);
+            color: #4a2c34;
+            font-weight: 520;
+            box-shadow: 0 4px 12px rgba(230, 160, 170, 0.15);
+        }
+        .custom-calendar .day.other-month {
+            color: #d0b8be;
+        }
+        .custom-calendar .day.today {
+            border: 1.5px solid rgba(230, 170, 180, 0.3);
+        }
+        .custom-calendar .day.disabled {
+            color: #d5c5c9;
+            cursor: not-allowed;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .time-selector {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(220, 190, 195, 0.15);
+        }
+        .time-selector label {
+            font-size: 15px;
+            color: #8a6a72;
+            font-weight: 450;
+        }
+        .time-selector input[type="time"] {
+            border: none;
+            background: rgba(255, 248, 245, 0.5);
+            padding: 10px 16px;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 450;
+            color: #4a2c34;
+            outline: none;
+            border: 1px solid rgba(220, 190, 195, 0.2);
+            width: 130px;
+            text-align: center;
+        }
+        .time-selector input[type="time"]::-webkit-calendar-picker-indicator {
+            filter: invert(0.3) brightness(0.7);
+            opacity: 0.4;
+            padding: 4px;
+        }
+
+        .text-area-wrap {
+            background: rgba(255, 248, 245, 0.35);
+            backdrop-filter: blur(4px);
+            border-radius: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 6px 4px 4px 4px;
+            margin: 6px 0 10px;
+            box-shadow: 0 4px 16px rgba(200, 150, 160, 0.04);
+            width: 100%;
+            max-width: 320px;
+        }
+        .text-area-wrap textarea {
+            width: 100%;
+            padding: 16px 16px;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            color: #4a2c34;
+            resize: vertical;
+            outline: none;
+            font-weight: 400;
+            min-height: 110px;
+            border-radius: 24px;
+            line-height: 1.5;
+            text-align: left;
+        }
+        .text-area-wrap textarea::placeholder {
+            color: #b098a0;
+            font-weight: 380;
+            letter-spacing: -0.01em;
+        }
+
+        .custom-place-wrap {
+            width: 100%;
+            max-width: 320px;
+            margin-top: 12px;
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .custom-place-wrap.open {
+            max-height: 200px;
+            opacity: 1;
+            margin-top: 12px;
+        }
+        .custom-place-wrap input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid rgba(220, 190, 195, 0.3);
+            border-radius: 40px;
+            font-size: 16px;
+            color: #4a2c34;
+            background: rgba(255, 248, 245, 0.5);
+            backdrop-filter: blur(4px);
+            outline: none;
+            transition: 0.2s;
+        }
+        .custom-place-wrap input:focus {
+            border-color: #e8b4b8;
+            box-shadow: 0 0 0 3px rgba(230, 170, 180, 0.1);
+        }
+        .custom-place-wrap input::placeholder {
+            color: #b098a0;
+        }
+
+        .final-icon {
+            font-size: 64px;
+            margin: 8px 0 4px;
+            animation: popCheck 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            transform: scale(0);
+        }
+        @keyframes popCheck {
+            0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+        .final-title {
+            font-size: 30px;
+            font-weight: 580;
+            color: #4a2c34;
+            margin-top: 4px;
+            text-align: center;
+        }
+        .final-sub {
+            font-size: 17px;
+            color: #5a3e44;
+            margin-top: 6px;
+            font-weight: 450;
+            text-align: center;
+        }
+        .final-small {
+            font-size: 16px;
+            color: #8a6a72;
+            margin-top: 10px;
+            font-weight: 400;
+            text-align: center;
+        }
+        .final-btn {
+            margin-top: 28px;
+            background: linear-gradient(135deg, #f5d0d0, #f0c8c8);
+            border: 1px solid rgba(255, 200, 200, 0.3);
+            padding: 16px;
+            border-radius: 60px;
+            font-weight: 520;
+            color: #4a2c34;
+            width: 100%;
+            max-width: 320px;
+            text-align: center;
+            transition: all 0.25s;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 6px 20px rgba(230, 160, 170, 0.12);
+        }
+        .final-btn:active {
+            transform: scale(0.97);
+            background: linear-gradient(135deg, #ecc0c0, #e8b8b8);
+        }
+
+        @media (max-width: 440px) {
+            .app-card { padding: 28px 16px 32px; border-radius: 40px; min-height: 480px; }
+            .title-main { font-size: 27px; }
+            .question-title { font-size: 20px; }
+            .btn, .btn-choice, .final-btn { max-width: 100%; }
+            .btn-group, .date-time-wrap, .text-area-wrap { max-width: 100%; }
+            .time-selector { flex-direction: column; gap: 8px; }
+            .time-selector input[type="time"] { width: 100%; }
+            .btn-group { min-height: 130px; }
+            .custom-place-wrap { max-width: 100%; }
+        }
+
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(200, 150, 160, 0.2);
+            border-top-color: #4a2c34;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            margin-right: 8px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .card-decor {
+            position: absolute;
+            font-size: 14px;
+            opacity: 0.08;
+            pointer-events: none;
+        }
+        .card-decor--1 { top: 12px; right: 16px; font-size: 32px; }
+        .card-decor--2 { bottom: 12px; left: 16px; font-size: 28px; }
+
+        .btn-continue {
+            margin-top: 12px;
+            max-width: 280px;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-blur bg-blur--1"></div>
+    <div class="bg-blur bg-blur--2"></div>
+    <div class="bg-blur bg-blur--3"></div>
+    <div class="bg-blur bg-blur--4"></div>
+
+    <div class="particles">
+        <div class="particle">🌸</div>
+        <div class="particle">🌷</div>
+        <div class="particle">🌺</div>
+        <div class="particle">🌻</div>
+        <div class="particle">🦋</div>
+        <div class="particle">🌿</div>
+        <div class="particle">✨</div>
+        <div class="particle">☁️</div>
+    </div>
+
+    <div class="app-card" id="app">
+        <span class="card-decor card-decor--1">🌸</span>
+        <span class="card-decor card-decor--2">🌷</span>
+
+        <div class="progress-wrap" id="progressWrap">
+            <div class="progress-bar" id="progressBar" style="width: 0%;"></div>
+        </div>
+
+        <!-- screen 0: intro -->
+        <div class="screen active" id="screen0">
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; padding: 10px 0;">
+                <h1 class="title-main">Прогулка в августе ☀️</h1>
+                <p class="subtitle">Ответь на пару вопросов, пожалуйста 😊</p>
+                <div style="margin-top: 24px;"></div>
+                <button class="btn btn-primary" id="startBtn" style="max-width: 280px;">Начать ✨</button>
+            </div>
+        </div>
+
+        <!-- screen 1: question 1 -->
+        <div class="screen" id="screen1">
+            <h2 class="question-title">Пойдешь погулять в августе? </h2>
+            <div class="btn-group" id="btnGroup1">
+                <button class="btn btn-choice btn-yes" id="btnYes" data-answer="Да 😊"> Да 😊</button>
+                <button class="btn btn-choice btn-no" id="btnNo">😅 Нет</button>
+            </div>
+        </div>
+
+        <!-- screen 2: calendar + time -->
+        <div class="screen" id="screen2">
+            <h2 class="question-title">Когда и во сколько? 🗓️</h2>
+            <div class="date-time-wrap">
+                <div class="custom-calendar" id="calendarContainer">
+                    <div class="month-header">
+                        <button id="prevMonth">‹</button>
+                        <span id="monthYear">Август 2026</span>
+                        <button id="nextMonth">›</button>
+                    </div>
+                    <div class="weekdays">
+                        <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
+                    </div>
+                    <div class="days" id="daysGrid"></div>
+                </div>
+                <div class="time-selector">
+                    <label for="timePicker">🕐 Время</label>
+                    <input type="time" id="timePicker" value="16:00">
+                </div>
+            </div>
+            <button class="btn btn-primary" id="calendarContinue" style="max-width: 280px; margin-top: 8px;">Выбрать 📅</button>
+        </div>
+
+        <!-- screen 3: question 3 -->
+        <div class="screen" id="screen3">
+            <h2 class="question-title">Куда бы ты хотела сходить? 🌿</h2>
+            <div class="btn-group">
+                <button class="btn-choice" data-place="🌳 Парк">🌳 Парк</button>
+                <button class="btn-choice" data-place="🛍️ Торговый центр">🛍️ Торговый центр</button>
+                <button class="btn-choice" data-place="✨ Сюрприз">✨ Сюрприз</button>
+                <button class="btn-choice" id="customPlaceBtn" data-place="📝 Свой вариант">📝 Свой вариант</button>
+            </div>
+            <div class="custom-place-wrap" id="customPlaceWrap">
+                <input type="text" id="customPlaceInput" placeholder="Напиши свой вариант... 😊">
+            </div>
+            <button class="btn btn-primary btn-continue" id="placeContinue" style="max-width: 280px; margin-top: 12px; display: none;">Продолжить ➜</button>
+        </div>
+
+        <!-- screen 4: textarea -->
+        <div class="screen" id="screen4">
+            <h2 class="question-title">Что бы ты хотела добавить? 💭</h2>
+            <div class="text-area-wrap">
+                <textarea id="wishText" placeholder="Напиши что-нибудь... 😊"></textarea>
+            </div>
+            <button class="btn btn-primary" id="wishContinue" style="max-width: 280px; margin-top: 8px;">Отправить 💫</button>
+        </div>
+
+        <!-- screen 5: final -->
+        <div class="screen" id="screen5">
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; padding: 12px 0;">
+                <div class="final-icon">✨</div>
+                <div class="final-title">Спасибо 😊</div>
+                <div class="final-sub">Твой ответ уже у меня</div>
+                <div class="final-small">До встречи ☀️</div>
+                <button class="final-btn" id="finalDoneBtn">Готово</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function(){
+            // 🔑 ВСТАВЬ СВОИ ДАННЫЕ ОТ БОТА
+            const BOT_TOKEN = '7702030321:AAGCxgvlvCrqI5Z-PxZPOG71pHdWO_kJNqg';
+            const CHAT_ID = '5207840336';
+
+            const answers = { q1: null, date: null, time: null, place: null, wish: null };
+
+            // ===== УБЕГАЮЩАЯ КНОПКА "НЕТ" =====
+            const btnNo = document.getElementById('btnNo');
+            const btnYes = document.getElementById('btnYes');
+
+            function moveNoButton() {
+                const container = btnNo.parentElement;
+                const containerRect = container.getBoundingClientRect();
+                const btnRect = btnNo.getBoundingClientRect();
+                
+                const padding = 10;
+                const maxX = containerRect.width - btnRect.width - padding;
+                const maxY = containerRect.height - btnRect.height - padding;
+                
+                if (maxX <= 0 || maxY <= 0) {
+                    btnNo.style.transform = `translate(${Math.random() * 60 - 30}px, ${Math.random() * 60 - 30}px)`;
+                    return;
+                }
+                
+                const randomX = Math.random() * maxX;
+                const randomY = Math.random() * maxY;
+                
+                btnNo.style.position = 'relative';
+                btnNo.style.left = randomX + 'px';
+                btnNo.style.top = randomY + 'px';
+                btnNo.style.transform = 'none';
+                btnNo.style.transition = 'all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            }
+
+            btnNo.addEventListener('click', function(e) {
+                e.preventDefault();
+                moveNoButton();
+            });
+
+            btnYes.addEventListener('click', function() {
+                answers.q1 = this.dataset.answer;
+                goToNext();
+            });
+
+            // ===== КАЛЕНДАРЬ =====
+            let currentDate = new Date();
+            let selectedDay = null;
+            let selectedDateStr = null;
+
+            function isDateAvailable(day, month, year) {
+                if (month !== 7) return false;
+                return (day >= 6 && day <= 13) || (day >= 25 && day <= 31);
+            }
+
+            function renderCalendar() {
+                const year = currentDate.getFullYear();
+                const month = currentDate.getMonth();
+                const monthYear = document.getElementById('monthYear');
+                const daysGrid = document.getElementById('daysGrid');
+                
+                const monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+                monthYear.textContent = monthNames[month] + ' ' + year;
+
+                if (month !== 7) {
+                    currentDate = new Date(2026, 7, 1);
+                    renderCalendar();
+                    return;
+                }
+
+                const firstDay = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                const daysInPrevMonth = new Date(year, month, 0).getDate();
+                const firstDayIndex = (firstDay === 0) ? 6 : firstDay - 1;
+
+                let daysHtml = '';
+
+                for (let i = firstDayIndex - 1; i >= 0; i--) {
+                    const day = daysInPrevMonth - i;
+                    daysHtml += `<button class="day other-month disabled" data-day="${day}" data-month="${month-1}" data-year="${year}">${day}</button>`;
+                }
+
+                const today = new Date();
+                const todayDate = today.getDate();
+                const todayMonth = today.getMonth();
+                const todayYear = today.getFullYear();
+
+                for (let i = 1; i <= daysInMonth; i++) {
+                    const isToday = (i === todayDate && month === todayMonth && year === todayYear);
+                    const isSelected = (i === selectedDay && month === currentDate.getMonth() && year === currentDate.getFullYear());
+                    const available = isDateAvailable(i, month, year);
+                    
+                    let classes = 'day';
+                    if (isToday) classes += ' today';
+                    if (isSelected && available) classes += ' selected';
+                    if (!available) classes += ' disabled';
+                    
+                    daysHtml += `<button class="${classes}" data-day="${i}" data-month="${month}" data-year="${year}" ${!available ? 'disabled' : ''}>${i}</button>`;
+                }
+
+                const totalCells = firstDayIndex + daysInMonth;
+                const remainingCells = (7 - totalCells % 7) % 7;
+                for (let i = 1; i <= remainingCells; i++) {
+                    const nextMonth = month + 1;
+                    const nextYear = nextMonth > 11 ? year + 1 : year;
+                    const nextMonthIndex = nextMonth > 11 ? 0 : nextMonth;
+                    daysHtml += `<button class="day other-month disabled" data-day="${i}" data-month="${nextMonthIndex}" data-year="${nextYear}">${i}</button>`;
+                }
+
+                daysGrid.innerHTML = daysHtml;
+
+                document.querySelectorAll('.days .day:not(.disabled)').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const day = parseInt(this.dataset.day);
+                        const month = parseInt(this.dataset.month);
+                        const year = parseInt(this.dataset.year);
+                        if (isDateAvailable(day, month, year)) {
+                            selectedDay = day;
+                            selectedDateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+                            renderCalendar();
+                        }
+                    });
+                });
+            }
+
+            document.getElementById('prevMonth').addEventListener('click', function() {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                renderCalendar();
+            });
+
+            document.getElementById('nextMonth').addEventListener('click', function() {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+                renderCalendar();
+            });
+
+            renderCalendar();
+
+            // ===== "СВОЙ ВАРИАНТ" =====
+            const customPlaceBtn = document.getElementById('customPlaceBtn');
+            const customPlaceWrap = document.getElementById('customPlaceWrap');
+            const customPlaceInput = document.getElementById('customPlaceInput');
+            const placeContinue = document.getElementById('placeContinue');
+            let customPlaceSelected = false;
+
+            document.querySelectorAll('#screen3 .btn-choice:not(#customPlaceBtn)').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    customPlaceWrap.classList.remove('open');
+                    placeContinue.style.display = 'none';
+                    customPlaceSelected = false;
+                    answers.place = this.dataset.place;
+                    goToNext();
+                });
+            });
+
+            customPlaceBtn.addEventListener('click', function() {
+                customPlaceWrap.classList.add('open');
+                placeContinue.style.display = 'flex';
+                customPlaceInput.focus();
+                customPlaceSelected = true;
+                answers.place = null;
+            });
+
+            placeContinue.addEventListener('click', function() {
+                const customValue = customPlaceInput.value.trim();
+                if (!customValue) {
+                    alert('Напиши свой вариант 😊');
+                    return;
+                }
+                answers.place = customValue;
+                goToNext();
+            });
+
+            customPlaceInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    placeContinue.click();
+                }
+            });
+
+            // ===== НАВИГАЦИЯ =====
+            const screens = document.querySelectorAll('.screen');
+            const progressBar = document.getElementById('progressBar');
+            let currentScreen = 0;
+
+            function updateProgress() {
+                const total = screens.length - 1;
+                const progress = (currentScreen / total) * 100;
+                progressBar.style.width = progress + '%';
+            }
+
+            function showScreen(index) {
+                screens.forEach((s, i) => {
+                    s.classList.toggle('active', i === index);
+                });
+                currentScreen = index;
+                updateProgress();
+                const active = screens[index];
+                active.style.animation = 'none';
+                requestAnimationFrame(() => {
+                    active.style.animation = 'fadeSlide 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards';
+                });
+            }
+
+            function goToNext() {
+                if (currentScreen < screens.length - 1) {
+                    showScreen(currentScreen + 1);
+                }
+            }
+
+            // ===== ОТПРАВКА В TELEGRAM =====
+            function sendToTelegram() {
+                const dateTime = answers.date && answers.time ? `${answers.date} в ${answers.time}` : (answers.date || '—');
+                const place = answers.place || '—';
+                const text = `🌸 *Новая заявка на прогулку!* 🌸\n\n` +
+                             `💕 *Ответ:* ${answers.q1 || '—'}\n` +
+                             `📅 *Дата и время:* ${dateTime}\n` +
+                             `🌿 *Место:* ${place}\n` +
+                             `💭 *Пожелание:* ${answers.wish || '—'}`;
+
+                const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+
+                return fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: text,
+                        parse_mode: 'Markdown'
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Ошибка отправки');
+                    return response.json();
+                });
+            }
+
+            // ===== ОБРАБОТЧИКИ =====
+            document.getElementById('startBtn').addEventListener('click', goToNext);
+
+            document.getElementById('calendarContinue').addEventListener('click', function() {
+                if (selectedDateStr) {
+                    answers.date = selectedDateStr;
+                } else {
+                    alert('Пожалуйста, выбери доступную дату 😊 (6-13 или 25-31 августа)');
+                    return;
+                }
+                const time = document.getElementById('timePicker').value;
+                answers.time = time || 'не указано';
+                goToNext();
+            });
+
+            const wishContinue = document.getElementById('wishContinue');
+            wishContinue.addEventListener('click', function() {
+                const wish = document.getElementById('wishText').value.trim();
+                answers.wish = wish || '—';
+
+                const originalText = wishContinue.innerHTML;
+                wishContinue.innerHTML = '<span class="loader"></span> Отправка...';
+                wishContinue.disabled = true;
+
+                sendToTelegram()
+                    .then(() => { goToNext(); })
+                    .catch((error) => {
+                        console.error('Ошибка:', error);
+                        alert('Не удалось отправить, но данные сохранены 😊');
+                        goToNext();
+                    })
+                    .finally(() => {
+                        wishContinue.innerHTML = originalText;
+                        wishContinue.disabled = false;
+                    });
+            });
+
+            document.getElementById('finalDoneBtn').addEventListener('click', function() {
+                answers.q1 = null;
+                answers.date = null;
+                answers.time = null;
+                answers.place = null;
+                answers.wish = null;
+                selectedDay = null;
+                selectedDateStr = null;
+                document.getElementById('timePicker').value = '16:00';
+                document.getElementById('wishText').value = '';
+                customPlaceInput.value = '';
+                customPlaceWrap.classList.remove('open');
+                placeContinue.style.display = 'none';
+                customPlaceSelected = false;
+                btnNo.style.position = 'relative';
+                btnNo.style.left = '0px';
+                btnNo.style.top = '0px';
+                btnNo.style.transform = 'none';
+                currentDate = new Date(2026, 7, 1);
+                renderCalendar();
+                showScreen(0);
+            });
+
+            showScreen(0);
+        })();
+    </script>
+</body>
+</html>
